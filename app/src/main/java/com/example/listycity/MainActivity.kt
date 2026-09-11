@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
                     CityListScreen(
                         cities = cityRepository.cities,
                         onAddCity = {cityRepository.addCity( it )},
+                        onDeleteCity = {cityRepository.deleteCity( it )},
                         modifier = Modifier.padding(paddingValues = innerPadding)
                     )
                 }
@@ -49,8 +51,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CityListScreen(cities: List<String>, onAddCity: (String) -> Unit, modifier: Modifier = Modifier){
+fun CityListScreen(
+    cities: List<String>,
+    onAddCity: (String) -> Unit,
+    onDeleteCity: (String) -> Unit,
+    modifier: Modifier = Modifier
+){
     var newCityName by remember { mutableStateOf(value = "") }
+    var selectedCity by remember { mutableStateOf(value = "") }
 
     Column(modifier = modifier.fillMaxSize()) {
         Row(modifier = Modifier.padding(all = 16.dp)){
@@ -69,18 +77,39 @@ fun CityListScreen(cities: List<String>, onAddCity: (String) -> Unit, modifier: 
                 }
             }) {Text("Add City")}
         }
-    }
+        Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Button(
+                onClick = {
+                    onDeleteCity(selectedCity)
+                    selectedCity = ""
+                }
+            ) {
+                Text("Delete Selected City")
+            }
+        }
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            items(cities){
+                    city -> CityRow(city = city,
+                isSelected = city == selectedCity,
+                onCitySelected = {
+                    selectedCity = city
+                })
 
-    LazyColumn(modifier = modifier.fillMaxSize()) {
-        items(cities){
-            city -> CityRow(city = city)
+            }
         }
     }
+
+
 }
 
 @Composable
-fun CityRow(city: String){
-    Text(text = city, fontSize = 28.sp, modifier = Modifier.fillMaxWidth().padding(horizontal=18.dp, vertical=14.dp))
+fun CityRow(city: String, isSelected: Boolean = false, onCitySelected: (String) -> Unit){
+    Text(text = city,
+        fontSize = 28.sp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable{ onCitySelected(city)}
+            .padding(horizontal=18.dp, vertical=14.dp))
 }
 
 @Composable
@@ -109,6 +138,10 @@ class CityRepository {
 
     fun addCity(city: String){ //example of setter function
         _cities.add(city)
+    }
+
+    fun deleteCity(city: String){
+        _cities.remove(city)
     }
 
 
