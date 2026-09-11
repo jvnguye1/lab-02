@@ -53,7 +53,7 @@ fun CityListScreen(cities: List<String>, onAddCity: (String) -> Unit, modifier: 
     var newCityName by remember { mutableStateOf(value = "") }
 
     Column(modifier = modifier.fillMaxSize()) {
-        Row(){
+        Row(modifier = Modifier.padding(all = 16.dp)){
             OutlinedTextField(
                 value = newCityName,
                 onValueChange = {newCityName = it},
