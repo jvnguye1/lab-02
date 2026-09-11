@@ -1,6 +1,13 @@
-#CMPUT 291 - Lab 2
-First Name: Jayden
-Last Name: Nguyen
-CCID: jvnguye1
-Lecture: A1
-Lab: D06
+# CMPUT 301: Lab 2 Participation Exercise
+
+## Student Details
+- **Full Name:** `Jayden Nguyen`
+- **CCID:** `jvnguye1`
+
+## References and Resources
+List any resources used here, or simply put `N/A` if not applicable.
+`N/A`
+
+## Verbal Collaboration
+List students' names and CCIDs here, or simply put `N/A` if not applicable. 
+`N/A`
